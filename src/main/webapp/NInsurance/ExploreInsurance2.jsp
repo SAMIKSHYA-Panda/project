@@ -103,8 +103,10 @@ h2 {
 	display: flex;
 	flex-direction: row;
 	gap: 0.75rem;
-	flex-wrap: nowrap;
+	flex-wrap: wrap;
 	padding: 0.5rem 0;
+	width: 1000px;
+	margin-left: 200px;
 }
 </style>
 </head>
