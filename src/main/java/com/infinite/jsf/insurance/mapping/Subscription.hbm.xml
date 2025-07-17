@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+<class name="com.infinite.jsf.insurance.model.Subscription" table="subscribe">
+ 
+    <id name="subscriptionId" column="subscription_id" type="string">
+<generator class="assigned"/>
+</id>
+ 
+    <!-- Correct mapping to Recipient -->
+<many-to-one name="recipient" class="com.infinite.jsf.insurance.model.Recipient" column="h_id" not-null="true" fetch="join" />
+ 
+    <!-- Correct mapping to Coverage Option -->
+<many-to-one name="insurancecoverageOption" class="com.infinite.jsf.insurance.model.InsuranceCoverageOption" column="coverage_id" not-null="true" fetch="join" />
+ 
+    <!-- Dates -->
+<property name="subscribeDate" column="subscribe_date" type="date" />
+<property name="expiryDate" column="expiry_date" type="date" />
+ 
+    <!-- Enum as String -->
+<property name="status" column="status" type="string" />
+ 
+    <!-- Premium values -->
+<property name="totalPremium" column="total_premium" type="double" />
+<property name="amountPaid" column="amount_paid" type="double" />
+ 
+    <!-- Mapping to Subscribed Members -->
+<set name="members" cascade="all" inverse="true">
+<key column="subscription_id" />
+<one-to-many class="com.infinite.jsf.insurance.model.SubscribedMember" />
+</set>
+ 
+  </class>
+</hibernate-mapping>
+
+ 
