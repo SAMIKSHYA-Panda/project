@@ -9,11 +9,11 @@ import com.infinite.jsf.util.SessionHelper;
 
 public class SubscribedMemberDaoImpl implements SubscribedMemberDao {
 
-    public void addSubscribedMember(SubscribedMember member) {
-        Session session = SessionHelper.getSessionFactory().openSession();
-        Transaction tx = session.beginTransaction();
-        session.save(member);
-        tx.commit();
-        session.close();
-    }
+	public void addSubscribedMember(SubscribedMember member) {
+		Session session = SessionHelper.getSessionFactory().openSession();
+		Transaction tx = session.beginTransaction();
+		session.save(member);
+		tx.commit();
+		session.close();
+	}
 }
