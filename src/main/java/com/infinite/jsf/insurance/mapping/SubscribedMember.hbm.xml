@@ -4,19 +4,18 @@
  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="com.infinite.jsf.insurance.model">
-  <class name="SubscribedMember" table="subscribedmember">
-  <id name="memberId" column="member_id">
-    <generator class="assigned"/>
-  </id>
+<class name="SubscribedMember" table="subscribedmember">
+<id name="memberId" column="member_id">
+<generator class="assigned"/>
+</id>
 
-  <many-to-one name="recipient" class="com.infinite.jsf.insurance.model.Recipient" column="h_id" not-null="true"/>
-  <many-to-one name="subscription" class="com.infinite.jsf.insurance.model.Subscription" column="subscription_id" not-null="true"/>
-
-  <property name="fullName" column="full_name"/>
-  <property name="dob" column="dob"/>
-  <property name="age" column="age"/>
-  <property name="gender" column="gender"/>
-  <property name="relationWithProposer" column="relation_with_proposer"/>
-  <property name="aadharNo" column="aadhar_no"/>
+<many-to-one name="recipient" class="com.infinite.jsf.insurance.model.Recipient" column="h_id" not-null="true"/>
+<many-to-one name="subscription" class="com.infinite.jsf.insurance.model.Subscription" column="subscription_id" not-null="true"/>
+<property name="fullName" column="full_name"/>
+<property name="dob" column="dob"/>
+<property name="age" column="age"/>
+<property name="gender" column="gender"/>
+<property name="relationWithProposer" column="relation_with_proposer"/>
+<property name="aadharNo" column="aadhar_no"/>
 </class>
 </hibernate-mapping>

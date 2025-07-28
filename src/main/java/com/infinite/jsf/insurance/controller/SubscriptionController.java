@@ -18,7 +18,6 @@ import com.infinite.jsf.insurance.daoImpl.*;
 import com.infinite.jsf.insurance.model.*;
 import com.infinite.jsf.util.SessionHelper;
 import com.infinite.jsf.util.SubscriptionIdGenerator;
-import org.apache.log4j.Logger;
 
 /**
  * SubscriptionController.java
@@ -62,7 +61,6 @@ public class SubscriptionController implements Serializable {
     private List<InsuranceCoverageOption> coverageOptions;
     private String selectedCoverageId;
     
-    private static final Logger LOGGER = Logger.getLogger(SubscriptionController.class.getName());
 
     // === Sorting Support ===
     private String sortBy = "subscriptionId";
