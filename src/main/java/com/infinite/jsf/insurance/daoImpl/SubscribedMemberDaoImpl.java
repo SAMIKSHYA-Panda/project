@@ -17,47 +17,31 @@ import com.infinite.jsf.util.SessionHelper;
 public class SubscribedMemberDaoImpl implements SubscribedMemberDao {
 
 	public List<SubscribedMember> searchBySubscriptionIdOrHidAndDob(String subscriptionId, String hId, Date dob) {
-	    List<SubscribedMember> resultList = new ArrayList<>();
-	    Session session = null;
+	    Session session = SessionHelper.getSessionFactory().openSession();
+	    Transaction tx = null;
+	    List<SubscribedMember> results = new ArrayList<>();
 
 	    try {
-	        session = SessionHelper.getSessionFactory().openSession();
+	        tx = session.beginTransaction();
 
-	        StringBuilder hql = new StringBuilder("FROM SubscribedMember sm WHERE 1=1");
+	        String hql = "FROM SubscribedMember sm " +
+	                     "WHERE (sm.subscription.subscriptionId = :subscriptionId " +
+	                     "OR (sm.recipient.hId = :hId AND sm.dob = :dob))";
 
-	        if (subscriptionId != null && !subscriptionId.trim().isEmpty()) {
-	            hql.append(" AND sm.subscriptionId = :subId");  // 👈 NOTE: changed from sm.subscription.subscriptionId
-	        }
-	        if (hId != null && !hId.trim().isEmpty()) {
-	            hql.append(" AND sm.hId = :hId"); // 👈 Changed to direct column
-	        }
-	        if (dob != null) {
-	            hql.append(" AND sm.dob = :dob");
-	        }
+	        Query query = session.createQuery(hql);
+	        query.setParameter("subscriptionId", subscriptionId);
+	        query.setParameter("hId", hId);
+	        query.setParameter("dob", dob);
 
-	        System.out.println("🔍 Final HQL: " + hql.toString());
-
-	        Query query = session.createQuery(hql.toString());
-
-	        if (subscriptionId != null && !subscriptionId.trim().isEmpty()) {
-	            query.setParameter("subId", subscriptionId);
-	        }
-	        if (hId != null && !hId.trim().isEmpty()) {
-	            query.setParameter("hId", hId);
-	        }
-	        if (dob != null) {
-	            query.setParameter("dob", dob);
-	        }
-
-	        resultList = query.list();
-	        System.out.println("✅ Result count: " + resultList.size());
-
+	        results = query.list();
+	        tx.commit();
 	    } catch (Exception e) {
+	        if (tx != null) tx.rollback();
 	        e.printStackTrace();
 	    } finally {
-	        if (session != null) session.close();
+	        session.close();
 	    }
 
-	    return resultList;
+	    return results;
 	}
 }

@@ -1,6 +1,7 @@
 package com.infinite.jsf.insurance.controller;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,58 +14,62 @@ import com.infinite.jsf.insurance.daoImpl.SubscribedMemberDaoImpl;
 import com.infinite.jsf.insurance.model.SubscribedMember;
 
 /**
- * SubscribedMemberController.java
- *
- * This JSF Managed Bean handles search functionality for Subscribed Members 
- * based on Subscription ID, Recipient HID, and Date of Birth.
+ * JSF Managed Bean for searching subscribed members by Subscription ID
+ * or by Recipient HID and Date of Birth.
  */
 public class SubscribedMemberController implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String subscriptionId;
     private String hId;
-    private String dobString;  // yyyy-MM-dd format
-    private List<SubscribedMember> searchResults;
+    private String dobString; // format: yyyy-MM-dd
+    private List<SubscribedMember> searchResults = new ArrayList<>();
 
-    // DAO
     private SubscribedMemberDaoImpl subscribedMemberDao = new SubscribedMemberDaoImpl();
 
-    // Action method
     public String searchSubscribedMembers() {
         FacesContext context = FacesContext.getCurrentInstance();
-        searchResults = new ArrayList<>();
+        searchResults.clear();
 
-        // Validation: Either subscriptionId or (hId and dob) must be provided
-        if ((subscriptionId == null || subscriptionId.trim().isEmpty())
-                && ((hId == null || hId.trim().isEmpty()) || (dobString == null || dobString.trim().isEmpty()))) {
+        // ✅ Validate input: Either subscriptionId or (hId + dob) required
+        boolean isSubscriptionIdEmpty = (subscriptionId == null || subscriptionId.trim().isEmpty());
+        boolean isHidEmpty = (hId == null || hId.trim().isEmpty());
+        boolean isDobEmpty = (dobString == null || dobString.trim().isEmpty());
+
+        if (isSubscriptionIdEmpty && (isHidEmpty || isDobEmpty)) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Please provide either Subscription ID or both HID and Date of Birth.", null));
+                    "Please enter either Subscription ID or both HID and Date of Birth.", null));
             return null;
         }
 
         try {
             Date dob = null;
-            if (dobString != null && !dobString.trim().isEmpty()) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                dob = sdf.parse(dobString);
+            if (!isDobEmpty) {
+                dob = new SimpleDateFormat("yyyy-MM-dd").parse(dobString);
             }
 
             searchResults = subscribedMemberDao.searchBySubscriptionIdOrHidAndDob(subscriptionId, hId, dob);
 
             if (searchResults == null || searchResults.isEmpty()) {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-                        "No subscribed members found for the given criteria.", null));
+                        "No subscribed members found for the given search criteria.", null));
             }
 
+        } catch (ParseException e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Invalid date format. Please use yyyy-MM-dd.", null));
         } catch (Exception e) {
             e.printStackTrace();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Invalid Date format. Please use yyyy-MM-dd.", null));
+                    "An error occurred while searching. Please try again.", null));
         }
 
-        return null; // Stay on the same page
+        return null; // stay on same page
     }
 
-    // --- Getters and Setters ---
+    // ✅ Getters and Setters
+
     public String getSubscriptionId() {
         return subscriptionId;
     }

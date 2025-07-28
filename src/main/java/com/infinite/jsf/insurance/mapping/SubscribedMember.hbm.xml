@@ -17,5 +17,6 @@
 <property name="gender" column="gender"/>
 <property name="relationWithProposer" column="relation_with_proposer"/>
 <property name="aadharNo" column="aadhar_no"/>
+
 </class>
 </hibernate-mapping>
