@@ -3,151 +3,174 @@
 <%@ taglib prefix="h" uri="http://java.sun.com/jsf/html"%>
 
 <f:view>
-	<html>
+<html>
 <head>
-<title>Explore Insurance Plans</title>
-<style>
-body {
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-	background-color: #f0f4f8;
-	padding: 30px;
-	margin: 0;
-}
+    <title>Explore Insurance Plans</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            padding: 30px;
+            margin: 0;
+        }
 
-h2 {
-	color: #1e3a8a;
-	text-align: center;
-	margin-bottom: 30px;
-}
+        h2 {
+            color: #1e3a8a;
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-.top-link {
-	display: inline-block;
-	margin-bottom: 30px;
-	font-size: 16px;
-	color: #2563eb;
-	text-decoration: none;
-	font-weight: bold;
-}
+        .top-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            font-size: 16px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .top-link:hover {
+            text-decoration: underline;
+        }
 
-.top-link:hover {
-	text-decoration: underline;
-}
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-.card-container {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 20px;
-	justify-content: center;
-	max-width: 1200px;
-	margin: 0 auto;
-}
+        .card {
+            background-color: #b2dfdb;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
 
-.card {
-	background-color: #ffffff;
-	border-radius: 12px;
-	padding: 20px;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-	transition: transform 0.3s ease;
-}
+        .card:hover {
+            transform: translateY(-5px);
+        }
 
-.card:hover {
-	transform: translateY(-5px);
-}
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #1f2937;
+        }
 
-.card-title {
-	font-size: 20px;
-	font-weight: bold;
-	margin-bottom: 10px;
-	color: #1f2937;
-}
+        .card-detail {
+            margin-bottom: 6px;
+            color: #374151;
+        }
 
-.card-detail {
-	margin-bottom: 6px;
-	color: #374151;
-}
+        .card-button {
+            background-color: #2563eb;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-top: 10px;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        .card-button:hover {
+            background-color: #1d4ed8;
+        }
 
-.card-button {
-	background-color: #2563eb;
-	color: white;
-	padding: 8px 16px;
-	border: none;
-	border-radius: 6px;
-	font-size: 14px;
-	margin-top: 10px;
-	margin-right: 8px;
-	cursor: pointer;
-}
+        .family-button {
+            background-color: #4caf50; 
+        }
+        .family-button:hover {
+            background-color: #3e8e41;
+        }
 
-.card-button:hover {
-	background-color: #1d4ed8;
-}
+        /* Responsive layout */
+        @media screen and (max-width: 1024px) {
+            .card-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media screen and (max-width: 768px) {
+            .card-container {
+                grid-template-columns: repeat(1, 1fr);
+            }
+        }
 
-/* Responsive override for 5 cards (3 in row 1, 2 in row 2) */
-.card-container>.card:nth-child(4), .card-container>.card:nth-child(5) {
-	grid-column: span 1;
-}
-
-@media screen and (max-width: 1024px) {
-	.card-container {
-		grid-template-columns: repeat(2, 1fr);
-	}
-}
-
-@media screen and (max-width: 768px) {
-	.card-container {
-		grid-template-columns: repeat(1, 1fr);
-	}
-}
-
-.date-display-table>tbody {
-	display: flex;
-	flex-direction: row;
-	gap: 0.75rem;
-	flex-wrap: wrap;
-	padding: 0.5rem 0;
-	width: 1000px;
-	margin-left: 200px;
-}
-</style>
+        .date-display-table > tbody {
+            display: flex;
+            flex-direction: row;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            padding: 0.5rem 0;
+            width: 1000px;
+            margin-left: 200px;
+        }
+    </style>
 </head>
 <body>
-	<h:form>
-		<h2>Explore Available Insurance Plans</h2>
+    <h:form>
+        <h2>Explore Available Insurance Plans</h2>
 
-		<div style="text-align: center;">
-			<h:commandLink value="All Subscriptions"
-				action="SubscriptionList?faces-redirect=true" styleClass="top-link" />
-		</div>
+        <div style="text-align: center;">
+            <h:commandLink value="All Subscriptions"
+                           action="SubscriptionList?faces-redirect=true"
+                           styleClass="top-link" />
+        </div>
 
-		<div class="card-container">
-			<h:dataTable value="#{insurancePlanController.planList}" var="plan"
-				border="0" styleClass="date-display-table">
-				<h:column>
-					<div class="card">
-						<h:outputText value="#{plan.planName}" styleClass="card-title" />
-						<br />
-						<h:outputText value="Plan ID: #{plan.planId}"
-							styleClass="card-detail" />
-						<br />
-						<h:outputText value="Company: #{plan.insuranceCompany.name}"
-							styleClass="card-detail" />
-						<br />
-						<h:outputText value="Type: #{plan.planType}"
-							styleClass="card-detail" />
-						<br />
+        <div class="card-container">
+            <h:dataTable value="#{insurancePlanController.planList}"
+                         var="plan"
+                         border="0"
+                         styleClass="date-display-table">
+                <h:column>
+                    <div class="card">
+                        <h:outputText value="#{plan.planName}"
+                                      styleClass="card-title" />
+                        <br />
+                        <h:outputText value="Plan ID: #{plan.planId}"
+                                      styleClass="card-detail" />
+                        <br />
+                        <h:outputText value="Company: #{plan.insuranceCompany.name}"
+                                      styleClass="card-detail" />
+                        <br />
+                        <h:outputText value="Type: #{plan.planType}"
+                                      styleClass="card-detail" />
+                        <br />
 
-						<h:commandButton value="View Details"
-							action="#{insurancePlanController.searchPlanById(plan.planId)}"
-							styleClass="card-button" />
+                        <h:commandButton value="View Details"
+                                         action="#{insurancePlanController.searchPlanById(plan.planId)}"
+                                         styleClass="card-button" />
 
-						<h:commandButton value="Subscribe"
-							action="#{subscriptionController.prepareSubscriptionPage(plan)}"
-							styleClass="card-button" />
-					</div>
-				</h:column>
-			</h:dataTable>
-		</div>
-	</h:form>
+                        <!-- Regular Subscribe button for non-family plans -->
+                        <h:commandButton value="Subscribe"
+                                         action="#{subscriptionController.prepareSubscriptionPage(plan)}"
+                                         styleClass="card-button"
+                                         rendered="#{plan.planType != 'FAMILY'}" />
+
+                        <!-- Family Subscribe button for family plans -->
+                        <h:commandButton value="Subscribe"
+                                         action="#{subscriptionController.prepareFamilySubscription(plan)}"
+                                         styleClass="card-button"
+                                         rendered="#{plan.planType == 'FAMILY'}" />
+                    </div>
+                </h:column>
+            </h:dataTable>
+        </div> <!-- End of card-container -->
+
+        <!-- 🔍 Search Button Below Cards -->
+        <div style="text-align: center; margin-top: 40px;">
+            <h:commandLink value="🔍 Search Your Subscribed Plans"
+                           action="searchSubscribedMembers?faces-redirect=true"
+                           style="font-size: 18px; font-weight: bold; color: #1e40af; 
+                                  text-decoration: none; border: 2px solid #1e40af;
+                                  padding: 10px 20px; border-radius: 8px;">
+                <f:param name="redirect" value="true" />
+            </h:commandLink>
+        </div>
+    </h:form>
 </body>
-	</html>
+</html>
 </f:view>

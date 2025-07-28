@@ -24,12 +24,12 @@ public class InsurancePlanDaoImpl implements InsurancePlanDao {
 
     @Override
     public String addInsurancePlan(InsurancePlan plan) {
-        String planId = generateNextPlanId();
-        plan.setPlanId(planId);
+        String planId = generateNextPlanId();//call to generateNextPlanId
+        plan.setPlanId(planId);//Assign that id to the entity
         Session session = factory.openSession();
-        Transaction trans = session.beginTransaction();
-        session.save(plan);
-        trans.commit();
+        Transaction trans = session.beginTransaction();//begain a database transaction
+        session.save(plan); //save the entity
+        trans.commit();//commit the transaction
         session.close();
         return "success";
     }

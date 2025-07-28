@@ -5,6 +5,8 @@
 <html>
 <head>
     <title>Insurance Menu - HealthSure</title>
+    <link rel="stylesheet" type="text/css" href="/HealthSureClient/resources/css/style.css" />
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -36,24 +38,22 @@
         .menu-buttons {
             margin-top: 30px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .menu-buttons h:commandButton,
-        .top-buttons h:commandButton {
-            font-size: 16px;
+        .back-button {
+            background-color: #dc2626 !important; /* Red */
+            color: white !important;
             padding: 12px 24px;
-            background-color: #1d4ed8;
-            color: white;
             border: none;
             border-radius: 8px;
+            font-size: 16px;
             cursor: pointer;
         }
 
-        .menu-buttons h:commandButton:hover,
-        .top-buttons h:commandButton:hover {
-            background-color: #2563eb;
+        .back-button:hover {
+            background-color: #b91c1c !important;
         }
 
         .top-buttons {
@@ -81,8 +81,6 @@
             <span>Help: +91-9692543500</span>         
         </div>
 
-
-
         <div class="container">
             <h1>Welcome to HealthSure Insurance Portal</h1>
 
@@ -100,11 +98,8 @@
             </p>
 
             <div class="menu-buttons">
-                <h:commandButton value="Explore" action="NInsuranceOptions" />
-                <h:commandButton value="Explore All Plans" action="ExploreInsurance2" />
-                <h:commandButton value="Search Plans" action="SearchPlans" />
-                
-                 <h:commandButton value="Back" action="Home" />
+                <h:commandButton value="Explore All Plans" action="ExploreInsurance2" styleClass="appointment-button" />
+                <h:commandButton value="Back" action="Home" styleClass="back-button" />
             </div>
         </div>
     </h:form>

@@ -13,11 +13,22 @@ public class SubscribedMember {
 	private String gender;
 	private String relationWithProposer;
 	private String aadharNo;
+	//LAzyLoaded....
 	private Subscription subscription; // mapped as many-to-one
+	private Recipient recipient;
+	
 
 	// Getters & Setters
 
 	
+	public Recipient getRecipient() {
+		return recipient;
+	}
+
+	public void setRecipient(Recipient recipient) {
+		this.recipient = recipient;
+	}
+
 	public String getFullName() {
 		return fullName;
 	}

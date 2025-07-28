@@ -20,4 +20,8 @@ public interface RecipientDao {
     Recipient findByHid(String hId);
  
     List<Recipient> findAllRecipients();
+    void saveRecipient(Recipient recipient);
+    Recipient getRecipientById(String hId);
+
+  
 }

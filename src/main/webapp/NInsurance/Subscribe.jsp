@@ -52,7 +52,9 @@
 
         .button-row {
             margin-top: 30px;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 15px;    /* space between buttons */
         }
 
         .message-error {
@@ -119,7 +121,7 @@
         }
 
         function confirmCancel() {
-            window.location.href = 'ExploreInsurance2.jsp'; // Update as per routing setup
+            window.location.href = 'ExploreInsurance2.jsf'; // adjust route as needed
         }
     </script>
 </head>
@@ -127,7 +129,7 @@
     <f:view>
         <h:form styleClass="form-container">
 
-            <h2>Subscribe to Plan: 
+            <h2>Subscribe to Plan:
                 <h:outputText value="#{subscriptionController.selectedPlan.planName}" />
             </h2>
             <hr />
@@ -139,9 +141,11 @@
             <h3>Coverage Options:</h3>
             <h:panelGrid columns="2" columnClasses="label,field" cellpadding="6">
                 <h:outputLabel for="coverageOption" value="Select Coverage Option:" />
-                <h:selectOneMenu id="coverageOption" value="#{subscriptionController.selectedCoverageId}" required="true">
+                <h:selectOneMenu id="coverageOption"
+                                 value="#{subscriptionController.selectedCoverageId}"
+                                 required="true">
                     <f:selectItem itemLabel="-- Select Coverage --" itemValue="" />
-                    <f:selectItems value="#{subscriptionController.coverageOptions}" 
+                    <f:selectItems value="#{subscriptionController.coverageOptions}"
                                    var="cov"
                                    itemValue="#{cov.coverageId}"
                                    itemLabel="#{cov.coverageId} - ₹#{cov.premiumAmount} / ₹#{cov.coverageAmount}" />
@@ -158,34 +162,47 @@
                 <h:panelGroup layout="block">
                     <div class="fetch-row">
                         <h:inputText value="#{subscriptionController.recipient.hId}" required="true" />
-                        <h:commandButton value="Fetch" action="#{subscriptionController.fetchRecipientDetails}" styleClass="button-blue" />
+                        <h:commandButton value="Fetch"
+                                         action="#{subscriptionController.fetchRecipientDetails}"
+                                         styleClass="button-blue" />
                     </div>
                 </h:panelGroup>
 
                 <!-- Auto-Filled Fields -->
                 <h:outputLabel value="First Name:" />
-                <h:inputText value="#{subscriptionController.recipient.firstName}" disabled="true" />
+                <h:inputText value="#{subscriptionController.recipient.firstName}"
+                             disabled="true" />
 
                 <h:outputLabel value="Last Name:" />
-                <h:inputText value="#{subscriptionController.recipient.lastName}" disabled="true" />
+                <h:inputText value="#{subscriptionController.recipient.lastName}"
+                             disabled="true" />
 
                 <h:outputLabel value="Gender:" />
-                <h:inputText value="#{subscriptionController.recipient.gender}" disabled="true" />
+                <h:inputText value="#{subscriptionController.recipient.gender}"
+                             disabled="true" />
 
                 <h:outputLabel value="Date of Birth:" />
-                <h:inputText value="#{subscriptionController.recipient.dob}" disabled="true" />
+                <h:inputText value="#{subscriptionController.recipient.dob}"
+                             disabled="true" />
 
                 <h:outputLabel value="Email:" />
-                <h:inputText value="#{subscriptionController.recipient.email}" disabled="true" />
+                <h:inputText value="#{subscriptionController.recipient.email}"
+                             disabled="true" />
 
                 <h:outputLabel value="Mobile:" />
-                <h:inputText value="#{subscriptionController.recipient.mobile}" disabled="true" />
+                <h:inputText value="#{subscriptionController.recipient.mobile}"
+                             disabled="true" />
             </h:panelGrid>
 
             <!-- ========== Form Action Buttons ========== -->
             <div class="button-row">
-                <h:commandButton value="Subscribe Now" action="#{subscriptionController.saveSubscription}" styleClass="button-blue" />
-                <h:commandButton value="Cancel" onclick="showCancelPopup(); return false;" styleClass="button-blue" />
+                <h:commandButton value="Subscribe Now"
+                                 action="#{subscriptionController.saveSubscription}"
+                                 styleClass="button-blue" />
+
+                <h:commandButton value="Cancel"
+                                 onclick="showCancelPopup(); return false;"
+                                 styleClass="button-blue" />
             </div>
         </h:form>
 

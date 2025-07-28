@@ -11,26 +11,43 @@
             background-color: #f9f9f9;
             padding: 30px;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             background-color: white;
         }
+
         th, td {
             padding: 10px;
             border: 1px solid #ccc;
             text-align: left;
         }
+
         th {
             background-color: #e5e7eb;
         }
-        .btn {
-            padding: 6px 12px;
-            margin: 2px;
-        }
+
         .table-header {
             font-size: 1.2em;
             font-weight: bold;
+        }
+
+        /* Card-style button copied from previous page */
+        .card-button {
+            background-color: #2563eb;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-top: 10px;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        .card-button:hover {
+            background-color: #1d4ed8;
         }
     </style>
 </head>
@@ -92,12 +109,12 @@
 
             <h:column>
                 <f:facet name="header"><h:outputText value="Renew" styleClass="table-header" /></f:facet>
-                <h:commandButton value="Renew" action="#{subscriptionController.renewSubscription(sub.subscriptionId)}" styleClass="btn" />
+                <h:commandButton value="Renew" action="#{subscriptionController.renewSubscription(sub.subscriptionId)}" styleClass="card-button" />
             </h:column>
 
             <h:column>
                 <f:facet name="header"><h:outputText value="Delete" styleClass="table-header" /></f:facet>
-                <h:commandButton value="Delete" action="#{subscriptionController.deleteSubscription(sub)}" styleClass="btn" />
+                <h:commandButton value="Delete" action="#{subscriptionController.deleteSubscription(sub)}" styleClass="card-button" />
             </h:column>
         </h:dataTable>
 
@@ -107,7 +124,7 @@
         </h:panelGroup>
 
         <br/><br/>
-        <h:commandButton value="Back to Explore Plans" action="ExploreInsurance2" styleClass="btn" />
+        <h:commandButton value="Back to Explore Plans" action="ExploreInsurance2" styleClass="card-button" />
 
     </h:form>
 </f:view>

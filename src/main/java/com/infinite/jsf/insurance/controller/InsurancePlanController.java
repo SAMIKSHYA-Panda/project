@@ -1,210 +1,3 @@
-//package com.infinite.jsf.insurance.controller;
-//
-//import java.util.Date;
-//import java.util.List;
-//
-//import javax.faces.application.FacesMessage;
-//import javax.faces.context.FacesContext;
-//
-//import com.infinite.jsf.insurance.dao.InsurancePlanDao;
-//import com.infinite.jsf.insurance.daoImpl.InsurancePlanDaoImpl;
-//import com.infinite.jsf.insurance.model.InsuranceCompany;
-//import com.infinite.jsf.insurance.model.InsurancePlan;
-//
-//import lombok.Data;
-//
-//@Data
-//public class InsurancePlanController {
-//
-//	private InsurancePlan insurancePlan;
-//	private InsuranceCompany insuranceCompany;
-//    private String showSuccessMessage ;
-//	private InsurancePlanDao plandao = new InsurancePlanDaoImpl();
-//	
-//	
-//	
-//	static {
-//		
-//	}
-//	
-////	=============methods==============
-//
-//	public List<InsurancePlan> findAllPlan() {
-//		return plandao.showAllPlans();
-//	}
-//
-//	public String addPlan(InsurancePlan insurancePlan) {
-//		
-//		insurancePlan.setInsuranceCompany(insuranceCompany);
-//		if(validateInsurancePlanWithFacesMessage(insurancePlan)) {
-//
-//			plandao.addInsurancePlan(insurancePlan);
-//
-//			return "showplan?faces-redirect=true";
-//			
-//		}
-//		
-//		return null;
-//
-//
-//	}  
-//	public String searchPlanById(String planId) {
-//		
-//		FacesContext context=FacesContext.getCurrentInstance();
-//		insurancePlan= plandao.searchInsurancePlanById(planId); 
-//		System.out.println("=====search method is called==========");
-//		System.out.println(insurancePlan);
-//		
-//		context.getExternalContext().getSessionMap().put("planId", planId);
-//		
-//		if(insurancePlan==null) {
-//			context.addMessage(null,new FacesMessage("plan is not found with this id : "+planId ,null));
-//			return null;	
-//		}
-//		
-//		return "searchPlanById?faces-redirect=true";
-//		
-//	}
-//	
-//	public String deletePlaneById(String planId) {
-//		FacesContext context=FacesContext.getCurrentInstance();
-//		insurancePlan= plandao.searchInsurancePlanById(planId); 
-//		if(insurancePlan==null) {
-//			context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"plan is not found with this id : "+planId ,null));
-//			return null;	
-//		}
-//		
-//		plandao.deleteInsurancePlan(insurancePlan);
-//		
-//		showSuccessMessage = "plan deleted showsuccessfully!";
-//
-//
-//		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "company deleted succussfully!", null));
-//
-//		return "showplan?faces-redirect=true";
-//	}
-//	
-//
-//	
-//  public String updateInsurancePlan(InsurancePlan plan) {
-//	  FacesContext context=FacesContext.getCurrentInstance();
-////	  String planId=(String) context.getExternalContext().getSessionMap().get("planId");
-////	  plan.setPlanId(planId);
-//	  System.out.println("=====update method is called==========");
-//		System.out.println(plan);
-//		
-//	  if(validateInsurancePlanWithFacesMessage(plan)) {
-//		  
-//		  plandao.updateInsurancePlan(plan);
-//		  return "showplan?faces-redirect=true";
-//	  }
-//	  
-//	  
-//	  
-//	  context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"validation Fails",null));
-//	  return null;
-//  
-//	  
-//  }
-//	public boolean validateInsurancePlanWithFacesMessage(InsurancePlan plan) {
-//	    FacesContext context = FacesContext.getCurrentInstance();
-//	    boolean isValid = true;
-//
-//	    
-//
-//	    // Plan Name
-//	    if (plan.getPlanName() == null || plan.getPlanName().trim().isEmpty()) {
-//	        context.addMessage("companyForm:planName", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Plan name is required.", null));
-//	        isValid = false;
-//	    } else if (plan.getPlanName().trim().length() < 4) {
-//	        context.addMessage("companyForm:planName", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Plan name must be at least 4 characters.", null));
-//	        isValid = false;
-//	    }
-//
-//	    
-//
-//	    // Insurance Company
-//	    if (plan.getInsuranceCompany() == null || plan.getInsuranceCompany().getCompanyId() == null) {
-//	        context.addMessage("companyForm:companyId", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Insurance company is required.", null));
-//	        isValid = false;
-//	    }
-//
-//	    // Description
-//	    if (plan.getDescription() == null || plan.getDescription().trim().isEmpty()) {
-//	        context.addMessage("companyForm:description", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Description is required.", null));
-//	        isValid = false;
-//	    } else if (plan.getDescription().trim().length() <= 5) {
-//	        context.addMessage("companyForm:description", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Description must be more than 5 characters.", null));
-//	        isValid = false;
-//	    }
-//
-//	    // Available Cover Amounts (assume it's a String, convert to double if needed)
-//	    try {
-//	        double coverAmount = Double.parseDouble(plan.getAvailableCoverAmounts().trim());
-//	        if (coverAmount <= 0) {
-//	            context.addMessage("companyForm:cover", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cover amount must be positive.", null));
-//	            isValid = false;
-//	        }
-//	    } catch (Exception e) {
-//	        context.addMessage("companyForm:cover", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid cover amount.", null));
-//	        isValid = false;
-//	    }
-//
-//	    // Min Entry Age
-//	    if (plan.getMinEntryAge() <= 0) {
-//	        context.addMessage("companyForm:minAge", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Minimum age must be greater than 0.", null));
-//	        isValid = false;
-//	    }
-//
-//	    // Max Entry Age
-//	    if (plan.getMaxEntryAge() <= 0 || plan.getMaxEntryAge() < plan.getMinEntryAge()) {
-//	        context.addMessage("companyForm:maxAge", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Maximum age must be greater than minimum age.", null));
-//	        isValid = false;
-//	    }
-//
-//	    // Waiting Period (must be between 0 and 12)
-//	    try {
-//	        int waiting = Integer.parseInt(plan.getWaitingPeriod().trim());
-//	        if (waiting < 0 || waiting > 12) {
-//	            context.addMessage("companyForm:waitingPeriod", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Waiting period must be between 0 and 12 months.", null));
-//	            isValid = false;
-//	        }
-//	    } catch (Exception e) {
-//	        context.addMessage("companyForm:waitingPeriod", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid waiting period.", null));
-//	        isValid = false;
-//	    }
-//
-//	    // Periodic Diseases
-//	    if (plan.getPeriodicDiseases() == null || plan.getPeriodicDiseases().trim().isEmpty()) {
-//	        context.addMessage("companyForm:periodicDiseases", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Periodic diseases field is required.", null));
-//	        isValid = false;
-//	    }
-//
-//	    // Active On, Created On, Expire Date logic
-//	    Date activeOn = plan.getActiveOn();
-//	    Date createdOn = plan.getCreatedOn();
-//	    Date expireDate = plan.getExpireDate();
-//
-//	    if (activeOn == null) {
-//	        context.addMessage("companyForm:activeOn", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Active On date is required.", null));
-//	        isValid = false;
-//	    } else {
-//	        if (createdOn != null && activeOn.before(createdOn)) {
-//	            context.addMessage("companyForm:activeOn", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Active On date cannot be before Created On date.", null));
-//	            isValid = false;
-//	        }
-//	        if (expireDate != null && activeOn.after(expireDate)) {
-//	            context.addMessage("companyForm:activeOn", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Active On date cannot be after Expire date.", null));
-//	            isValid = false;
-//	        }
-//	    }
-//
-//	    return isValid;
-//	}
-//
-//	
-//}
-
 
 package com.infinite.jsf.insurance.controller;
  
@@ -219,7 +12,33 @@ import com.infinite.jsf.insurance.daoImpl.InsurancePlanDaoImpl;
 import com.infinite.jsf.insurance.model.InsuranceCompany;
 import com.infinite.jsf.insurance.model.InsurancePlan;
  
- 
+/**
+ * InsurancePlanController.java
+ *
+ * This JSF Managed Bean handles the business logic and interactions related to insurance plans 
+ * in the insurance subscription system.
+ *
+ * Responsibilities:
+ * - Manages CRUD operations (Create, Read, Update, Delete) for insurance plans.
+ * - Validates insurance plan data before insertion or update.
+ * - Handles filtering of plans based on type (SELF, FAMILY, etc.).
+ * - Supports searching for plans by policy ID or recipient details (HID and DOB).
+ * - Communicates with the DAO layer (InsurancePlanDaoImpl) for data persistence.
+ * - Integrates with JSF for message handling, validation feedback, and navigation.
+ *
+ * Features:
+ * - Form validation using FacesContext and custom rules.
+ * - Dynamic filtering and searching of plans.
+ * - Navigation control between views like `NInsurancePlans.jsp`, `showplan.jsp`, and `NPlanDetails.jsp`.
+ *
+ * Technologies Used:
+ * - Java Server Faces (JSF 2) with JSP
+ * - Hibernate 3.6 (via DAO)
+ * - JavaBeans for data encapsulation and binding
+ *
+ * Author: [samikshya Panda]
+ * Date: [26-07-2025]
+ */
 public class InsurancePlanController {
  
 	private InsurancePlan insurancePlan;
@@ -227,13 +46,18 @@ public class InsurancePlanController {
 	private InsurancePlanDao plandao;
 	private String showSuccessMessage;
 	private List<InsurancePlan> planList;
-	// Constructor
+// Constructor
+	// ... (instance variables remain unchanged)
+
     public InsurancePlanController() {
         insurancePlan = new InsurancePlan();
         insuranceCompany = new InsuranceCompany();
-        plandao = new InsurancePlanDaoImpl(); //This initializes the DAO
+        plandao = new InsurancePlanDaoImpl(); // initializes the DAO
     }
-
+    /**
+	 * Retrieves and caches the list of all insurance plans.
+	 * @return list of all InsurancePlan objects
+	 */
 	public List<InsurancePlan> getPlanList() {
 	    if (planList == null) {
 	        planList = plandao.showAllPlans(); // This method is already implemented and working
@@ -256,7 +80,13 @@ public class InsurancePlanController {
 	public void setSearchDob(String searchDob) { this.searchDob = searchDob; }
 
 	public List<InsurancePlan> getSearchResults() { return searchResults; }
+	// === Search Functionality ===
 
+	/**
+	 * Searches for insurance plans based on policy ID or recipient's HID and DOB.
+	 * If no results found, adds a warning message to JSF context.
+	 * @return null (stays on the same page)
+	 */
 	public String searchPlanByPolicyOrRecipient() {
 	    searchResults = plandao.searchByPolicyIdOrRecipient(searchPolicyId, searchHid, searchDob);
 	    if (searchResults == null || searchResults.isEmpty()) {
@@ -265,19 +95,18 @@ public class InsurancePlanController {
 	    }
 	    return null;
 	}
-	
-	
-	
-	
 
-    //======//
 	 private String selectedType;
 	    private List<InsurancePlan> filteredPlans;
 
 	    InsurancePlanDao planDao = new InsurancePlanDaoImpl();
-
+	    /**
+		 * Filters insurance plans based on selected type (SELF, FAMILY, etc.).
+		 * @param type the type of plan to filter by
+		 * @return navigation to NInsurancePlans.jsp
+		 */
 	    public String select(String type) {
-	        this.selectedType = type.toUpperCase(); // e.g., "SELF"
+	        this.selectedType = type.toUpperCase();
 	        this.filteredPlans = planDao.getPlansByType(this.selectedType);
 	        return "NInsurancePlans";  // navigates to NInsurancePlans.jsp
 	    }
@@ -299,11 +128,19 @@ public class InsurancePlanController {
 	    }
 		
 	// ========== Show All ==========
+	    /**
+		 * Returns all insurance plans from the DAO.
+		 * @return List of InsurancePlan
+		 */
 	public List<InsurancePlan> findAllPlan() {
 		return plandao.showAllPlans();
 	}
  
 	// ========== Add ==========
+	/**
+	 * Adds a new insurance plan after validating fields.
+	 * @return navigation to showplan.jsp on success, else stays on same page
+	 */
 	public String addPlan() {
 		insurancePlan.setInsuranceCompany(insuranceCompany);
 		if (validateInsurancePlanWithFacesMessage(insurancePlan)) {
@@ -316,6 +153,11 @@ public class InsurancePlanController {
 	}
  
 	// ========== Search ==========
+	/**
+	 * Searches an insurance plan by ID and stores it in session map.
+	 * @param planId the ID of the plan
+	 * @return navigation to NPlanDetails.jsp or stays on page if not found
+	 */
 	public String searchPlanById(String planId) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		insurancePlan = plandao.searchInsurancePlanById(planId);

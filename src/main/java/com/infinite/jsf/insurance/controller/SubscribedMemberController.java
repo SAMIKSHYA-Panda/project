@@ -1,71 +1,99 @@
 package com.infinite.jsf.insurance.controller;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 import com.infinite.jsf.insurance.daoImpl.SubscribedMemberDaoImpl;
 import com.infinite.jsf.insurance.model.SubscribedMember;
-import com.infinite.jsf.insurance.model.Subscription;
 
+/**
+ * SubscribedMemberController.java
+ *
+ * This JSF Managed Bean handles search functionality for Subscribed Members 
+ * based on Subscription ID, Recipient HID, and Date of Birth.
+ */
 public class SubscribedMemberController implements Serializable {
 
-    private SubscribedMember member = new SubscribedMember();
-    private String useExistingSubscription = "yes"; // "yes" or "no"
-    private String selectedSubscriptionId;          // comes from UI
-    private List<SubscribedMember> memberList;
+    private String subscriptionId;
+    private String hId;
+    private String dobString;  // yyyy-MM-dd format
+    private List<SubscribedMember> searchResults;
 
-    SubscribedMemberDaoImpl dao = new SubscribedMemberDaoImpl();
+    // DAO
+    private SubscribedMemberDaoImpl subscribedMemberDao = new SubscribedMemberDaoImpl();
 
-    public String save() {
+    // Action method
+    public String searchSubscribedMembers() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        searchResults = new ArrayList<>();
+
+        // Validation: Either subscriptionId or (hId and dob) must be provided
+        if ((subscriptionId == null || subscriptionId.trim().isEmpty())
+                && ((hId == null || hId.trim().isEmpty()) || (dobString == null || dobString.trim().isEmpty()))) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Please provide either Subscription ID or both HID and Date of Birth.", null));
+            return null;
+        }
+
         try {
-            if ("yes".equalsIgnoreCase(useExistingSubscription)) {
-                Subscription s = new Subscription();
-                s.setSubscriptionId(selectedSubscriptionId); // link existing subscription
-                member.setSubscription(s);
-            } else {
-                Subscription newSub = new Subscription();
-                newSub.setSubscriptionId("S00X"); // You should generate dynamically or get from service
-                member.setSubscription(newSub);
+            Date dob = null;
+            if (dobString != null && !dobString.trim().isEmpty()) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                dob = sdf.parse(dobString);
             }
 
-            dao.addSubscribedMember(member);
-            return "ConfirmationSelf.jsp"; // success navigation
+            searchResults = subscribedMemberDao.searchBySubscriptionIdOrHidAndDob(subscriptionId, hId, dob);
+
+            if (searchResults == null || searchResults.isEmpty()) {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                        "No subscribed members found for the given criteria.", null));
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error.jsp"; // fallback page on failure
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Invalid Date format. Please use yyyy-MM-dd.", null));
         }
+
+        return null; // Stay on the same page
     }
 
-    // Getters and Setters
-    public SubscribedMember getMember() {
-        return member;
+    // --- Getters and Setters ---
+    public String getSubscriptionId() {
+        return subscriptionId;
     }
 
-    public void setMember(SubscribedMember member) {
-        this.member = member;
+    public void setSubscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
     }
 
-    public String getUseExistingSubscription() {
-        return useExistingSubscription;
+    public String gethId() {
+        return hId;
     }
 
-    public void setUseExistingSubscription(String useExistingSubscription) {
-        this.useExistingSubscription = useExistingSubscription;
+    public void sethId(String hId) {
+        this.hId = hId;
     }
 
-    public String getSelectedSubscriptionId() {
-        return selectedSubscriptionId;
+    public String getDobString() {
+        return dobString;
     }
 
-    public void setSelectedSubscriptionId(String selectedSubscriptionId) {
-        this.selectedSubscriptionId = selectedSubscriptionId;
+    public void setDobString(String dobString) {
+        this.dobString = dobString;
     }
 
-    public List<SubscribedMember> getMemberList() {
-        return memberList;
+    public List<SubscribedMember> getSearchResults() {
+        return searchResults;
     }
 
-    public void setMemberList(List<SubscribedMember> memberList) {
-        this.memberList = memberList;
+    public void setSearchResults(List<SubscribedMember> searchResults) {
+        this.searchResults = searchResults;
     }
 }

@@ -220,8 +220,8 @@
 <navigation-rule>
     <from-view-id>/Subscribe.jsp</from-view-id>
     <navigation-case>
-        <from-outcome>subscription-list</from-outcome>
-        <to-view-id>/SubscriptionList.jsp</to-view-id>
+        <from-outcome>subscription_successful</from-outcome>
+        <to-view-id>/Subscription_successful.jsp</to-view-id>
     </navigation-case>
 </navigation-rule>
 
@@ -275,7 +275,17 @@
 <managed-bean>
     <managed-bean-name>subscribedMemberController</managed-bean-name>
     <managed-bean-class>com.infinite.jsf.insurance.controller.SubscribedMemberController</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>   
+    <managed-property>
+        <property-name>member</property-name>
+        <value>#{subscribedMember}</value>
+    </managed-property>
+    <managed-bean>
+    <managed-bean-name>subscribedMember</managed-bean-name>
+    <managed-bean-class>com.infinite.jsf.insurance.model.SubscribedMember</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
+</managed-bean>
+    
 </managed-bean>
 <navigation-rule>
     <from-view-id>/SubscriptionList.jsp</from-view-id>
@@ -355,4 +365,20 @@
     <managed-bean-class>com.infinite.jsf.insurance.controller.SubscribedMemberController</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
 </managed-bean>
+
+ <managed-bean>
+    <managed-bean-name>recipientController</managed-bean-name>
+    <managed-bean-class>
+      com.infinite.jsf.insurance.controller.RecipientController
+    </managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+<navigation-rule>
+    <from-view-id>/ExploreInsurance2.jsp</from-view-id>
+    <navigation-case>
+        <from-outcome>family-subscription</from-outcome>
+        <to-view-id>/family-subscription.jsp</to-view-id>
+    </navigation-case>
+</navigation-rule>
+
 </faces-config>

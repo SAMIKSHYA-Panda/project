@@ -11,13 +11,13 @@ public class Recipient implements Serializable {
     private String lastName;
     private String mobile;
     private String userName;
-    private String gender;          // ✅ changed from Gender to String
+    private String gender;          //changed from Gender to String
     private Date dob;
     private String address;
     private Date createdAt;
     private String password;
     private String email;
-    private String status;          // ✅ changed from Status to String
+    private String status;          //  changed from Status to String
 
     private Set<Subscription> subscriptions;
 
@@ -146,4 +146,5 @@ public class Recipient implements Serializable {
     public void setSubscriptions(Set<Subscription> subscriptions) {
         this.subscriptions = subscriptions;
     }
+    
 }
